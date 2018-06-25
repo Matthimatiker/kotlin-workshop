@@ -58,7 +58,7 @@ class FunctionalSetTest {
         val unionSet = union(singleSet(10), union(singleSet(15), singleSet(20)))
 
         assertEquals(false, unionSet(5))
-        assertEquals(false, unionSet(10))
+        assertEquals(true, unionSet(10))
         assertEquals(true, unionSet(15))
         assertEquals(true, unionSet(20))
     }
@@ -117,7 +117,7 @@ class FunctionalSetTest {
     fun `filter returns a subset of the elements which matches the filter`() {
         val set = union(singleSet(1), union(singleSet(2), singleSet(3)))
 
-        val filterSet = filter(set, { i -> i >= 2 })
+        val filterSet = filter(set, { i -> i < 2 })
 
         assertEquals(true, filterSet(1))
         assertEquals(false, filterSet(2))
@@ -139,20 +139,16 @@ class FunctionalSetTest {
     fun `exists checks for the existential quantification`() {
         val set = union(singleSet(1), union(singleSet(2), singleSet(3)))
 
-//        assertTrue(exists(set, { i -> i % 2 == 0 }))
-//        assertFalse(exists(set, { i -> i > 4 }))
-
-        TODO()
+        assertTrue(exists(set, { i -> i % 2 == 0 }))
+        assertFalse(exists(set, { i -> i > 4 }))
     }
 
     @Test
     fun `forall checks for the universal quantification`() {
         val set = union(singleSet(1), union(singleSet(2), singleSet(3)))
 
-//        assertTrue(forall(set, { i -> i > 0 }))
-//        assertFalse(forall(set, { i -> i % 2 == 0 }))
-
-        TODO()
+        assertTrue(forall(set, { i -> i > 0 }))
+        assertFalse(forall(set, { i -> i % 2 == 0 }))
     }
 
 }
