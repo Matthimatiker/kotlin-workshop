@@ -130,9 +130,9 @@ class FunctionalSetTest {
 
         val filterSet = filter(set, { i -> true })
 
-        assertEquals(false, filterSet(1))
-        assertEquals(false, filterSet(2))
-        assertEquals(false, filterSet(3))
+        assertEquals(true, filterSet(1))
+        assertEquals(true, filterSet(2))
+        assertEquals(true, filterSet(3))
     }
 
     @Test
