@@ -36,6 +36,21 @@ class ProductPortTest {
     }
 
     @Test
+    fun `rejects product with empty name`() {
+
+    }
+
+    @Test
+    fun `rejects product with empty article number`() {
+
+    }
+
+    @Test
+    fun `rejects product without EAN`() {
+
+    }
+
+    @Test
     fun `we can get an existing product`() {
         // given - an existing product
         val articleNo = "000001"
@@ -59,6 +74,16 @@ class ProductPortTest {
         Assertions.assertThat(result.statusCode.is2xxSuccessful)
                 .`as`("Expected second product creation request to be rejected.")
                 .isFalse()
+    }
+
+    @Test
+    fun `can update existing product`() {
+
+    }
+
+    @Test
+    fun `error when trying to update a product that does not exist`() {
+
     }
 
     private fun assertProductResponse(responseBody: String, articleNo: String) {
