@@ -22,11 +22,13 @@ class ProductPortTest {
     @Autowired
     lateinit var testRestTemplate: TestRestTemplate
 
+    val validEAN = "12345678"
+
     @Test
     fun `we can create a new product`() {
         // given - a new product
         val articleNo = "12345678"
-        val product = ProductView(articleNo, "Bier", articleNo)
+        val product = ProductView(articleNo, "Bier", validEAN)
 
         // when - post on the resource
         val result = testRestTemplate.postForEntity("/products", product, String::class.java)
@@ -39,17 +41,32 @@ class ProductPortTest {
 
     @Test
     fun `rejects product with empty name`() {
+        val product = ProductView("42", "", validEAN)
 
+        val result = testRestTemplate.postForEntity("/products", product, String::class.java)
+
+        assertNotNull(result)
+        assertEquals(HttpStatus.BAD_REQUEST, result?.statusCode)
     }
 
     @Test
     fun `rejects product with empty article number`() {
+        val product = ProductView("", "Gin Tonic", validEAN)
 
+        val result = testRestTemplate.postForEntity("/products", product, String::class.java)
+
+        assertNotNull(result)
+        assertEquals(HttpStatus.BAD_REQUEST, result?.statusCode)
     }
 
     @Test
     fun `rejects product without EAN`() {
+        val product = ProductView("42", "Gin Tonic", "")
 
+        val result = testRestTemplate.postForEntity("/products", product, String::class.java)
+
+        assertNotNull(result)
+        assertEquals(HttpStatus.BAD_REQUEST, result?.statusCode)
     }
 
     @Test
@@ -82,7 +99,7 @@ class ProductPortTest {
     fun `can update existing product`() {
         anExistingProduct("42")
 
-        val updatedProduct = ProductView("42", "Wein", "12345")
+        val updatedProduct = ProductView("42", "Wein", validEAN)
         testRestTemplate.exchange("/products/42", HttpMethod.PUT, HttpEntity(updatedProduct), String::class.java)
 
         val productFromApi = getProduct("42")
@@ -94,7 +111,7 @@ class ProductPortTest {
 
     @Test
     fun `returns status code 404 when trying to update a product that does not exist`() {
-        val updatedProduct = ProductView("missing", "Wein", "12345")
+        val updatedProduct = ProductView("missing", "Wein", validEAN)
 
         val result = testRestTemplate.exchange("/products/missing", HttpMethod.PUT, HttpEntity(updatedProduct), String::class.java)
 
@@ -107,7 +124,7 @@ class ProductPortTest {
     }
 
     private fun anExistingProduct(articleNo: String) {
-        val product = ProductView(articleNo, "Bier", "12345678")
+        val product = ProductView(articleNo, "Bier", validEAN)
         testRestTemplate.postForEntity("/products", product, String::class.java)
     }
 
