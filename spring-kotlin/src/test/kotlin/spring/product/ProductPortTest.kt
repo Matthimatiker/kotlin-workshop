@@ -50,6 +50,17 @@ class ProductPortTest {
         assertProductResponse(result?.body ?: "", articleNo)
     }
 
+    @Test
+    fun `cannot create product with same article number twice`() {
+        anExistingProduct("42")
+
+        val result = testRestTemplate.getForEntity("/products/42", String::class.java)
+
+        Assertions.assertThat(result.statusCode.is2xxSuccessful)
+                .`as`("Expected second product creation request to be rejected.")
+                .isFalse()
+    }
+
     private fun assertProductResponse(responseBody: String, articleNo: String) {
         Assertions.assertThat(responseBody).contains("\"articleNo\":\"$articleNo\"");
     }
