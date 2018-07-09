@@ -94,4 +94,17 @@ class ProductPortTest {
         val product = ProductView(articleNo, "Bier", "12345678")
         testRestTemplate.postForEntity("/products", product, String::class.java)
     }
+
+    private fun getProduct(articleNo: String): ProductView? {
+        val result = testRestTemplate.getForEntity("/products/$articleNo", String::class.java)
+        assertNotNull(result)
+
+        if (result.statusCode.value() == 404) {
+            return null
+        }
+        val body = result.body
+        assertNotNull(body)
+
+        return ProductView.fromJson(body!!)
+    }
 }

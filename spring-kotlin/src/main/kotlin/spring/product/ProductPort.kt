@@ -1,5 +1,6 @@
 package spring.product
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -54,5 +55,9 @@ data class ProductView(
             product.name.name,
             product.ean.value
         )
+
+        fun fromJson(json: String): ProductView {
+            return jacksonObjectMapper().readValue(json, ProductView::class.java)
+        }
     }
 }
