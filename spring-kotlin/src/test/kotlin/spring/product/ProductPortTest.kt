@@ -1,6 +1,7 @@
 package spring.product
 
 import org.assertj.core.api.Assertions
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +23,15 @@ class ProductPortTest {
     @Autowired
     lateinit var testRestTemplate: TestRestTemplate
 
+    @Autowired
+    lateinit var productRepo: ProductRepo
+
     val validEAN = "12345678"
+
+    @Before
+    fun setUp() {
+        productRepo.deleteAll()
+    }
 
     @Test
     fun `we can create a new product`() {
