@@ -87,14 +87,19 @@ class ProductPortTest {
 
         val productFromApi = getProduct("42")
         Assertions.assertThat(productFromApi).isNotNull
-        Assertions.assertThat(productFromApi!!.name)
+        Assertions.assertThat(productFromApi?.name)
                 .isNotNull()
                 .isEqualTo("Wein")
     }
 
     @Test
-    fun `error when trying to update a product that does not exist`() {
+    fun `returns status code 404 when trying to update a product that does not exist`() {
+        val updatedProduct = ProductView("missing", "Wein", "12345")
 
+        val result = testRestTemplate.exchange("/products/missing", HttpMethod.PUT, HttpEntity(updatedProduct), String::class.java)
+
+        Assertions.assertThat(result).isNotNull
+        Assertions.assertThat(result.statusCode).isEqualTo(404)
     }
 
     private fun assertProductResponse(responseBody: String, articleNo: String) {
