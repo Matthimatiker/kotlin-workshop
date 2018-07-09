@@ -23,6 +23,17 @@ class ProductPort(val repo: ProductRepo) {
         return ResponseEntity.ok(ProductView.fromProduct(product))
     }
 
+    @PutMapping("/{articleNo}")
+    fun put(@PathVariable articleNo: String): ResponseEntity<ProductView> {
+        val product = repo.findFirstByArticleNo(ArticleNo(articleNo))
+        if (product == null) {
+            return ResponseEntity.notFound().build()
+        }
+
+        // TODO update product
+
+        return ResponseEntity.ok(ProductView.fromProduct(product))
+    }
 
     @GetMapping("/{articleNo}")
     fun get(@PathVariable articleNo: String): ResponseEntity<ProductView> {
