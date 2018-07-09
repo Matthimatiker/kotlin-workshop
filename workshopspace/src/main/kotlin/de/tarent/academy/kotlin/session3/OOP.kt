@@ -1,9 +1,5 @@
 package de.tarent.academy.kotlin.session3
 
-import com.sun.javafx.collections.SortableList
-import java.util.*
-import java.util.logging.Logger
-
 interface Arithmetic {
     fun add(a: Int, b: Int): Int
 
