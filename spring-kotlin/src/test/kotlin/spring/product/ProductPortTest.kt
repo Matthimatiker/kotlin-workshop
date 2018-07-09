@@ -1,7 +1,6 @@
 package spring.product
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,6 +10,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit4.SpringRunner
 import spring.App
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(classes = [App::class], webEnvironment = RANDOM_PORT)
@@ -50,8 +51,7 @@ class ProductPortTest {
     }
 
     private fun assertProductResponse(responseBody: String, articleNo: String) {
-        val productJson ="""{"articleNo":"$articleNo","name":"Bier","ean":"12345678"}""".trim()
-        assertEquals(responseBody, productJson)
+        Assertions.assertThat(responseBody).contains("\"articleNo\":\"$articleNo\"");
     }
 
     private fun anExistingProduct(articleNo: String) {
